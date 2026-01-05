@@ -1,0 +1,163 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+@font-face {
+    font-family: 'Bona Nova' ;
+    src: url('../police/BonaNova-Regular.ttf') format('truetype');
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(rgba(229, 229, 229, 1) 0%,
+                                rgba(131, 124, 119, 1) 90%,
+                                rgba(181, 166, 166, 1) 100%
+                                );
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    background-attachment: fixed;
+    min-height: 100vh;
+    
+}
+
+/* ******************NAVBAR************* */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    width: 100%;
+    
+}
+.menu-container{
+    position: relative;
+}
+
+.navbar img {
+    height: 25px;
+    width: 25px;
+    margin-left: 15px;
+}
+
+.navbar .menu {
+    margin-left: 20px;
+    
+}
+
+.navbar .logo a {
+    font-size: 30px;
+    font-weight: bold;
+    justify-content: center;
+    margin-left: 70px;
+    text-decoration: none;
+    color: black;
+    font-family: 'Bona Nova', serif;
+}
+
+.navbar ul {
+    display: flex;
+    list-style-type: none;
+    margin-right: 20px;
+}
+
+.contact  li img {
+    margin: 10px;
+    margin-top: 15px;
+    text-decoration: none;
+    height: 25px;
+    width: 25px;
+}
+
+
+
+
+/* ******************NAVBAR BURGER MENU************* */
+
+details{
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+    position: relative;
+    z-index: 100;
+}
+
+details .menu {
+    position: absolute;
+    left: 0;
+    flex-direction: column;
+    width: 150px;
+}
+
+details[open] .menu {
+    display: flex;
+    background-color:rgba(229, 229, 229, 1 );
+    z-index: 100;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) ;
+}
+
+summary {
+    cursor: pointer ;
+    list-style: none;
+}
+
+.menu  {
+    padding: 0 10px;
+    list-style: none;
+    flex-direction: column;
+}
+
+.menu li{
+    margin: 10px 0;
+    cursor: pointer ;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-decoration: none;
+    font-family: 'Bona Nova', serif;
+}
+
+.imgBurgerMenu{
+    height: 20px;
+    width: 20px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    flex: 1;
+    text-align: center;
+    height: 200px;
+    width: auto;
+}
+
+h1{
+    text-align: center;
+    margin: 15px;
+    font-family: 'Bona Nova', serif;
+}
+
+h2{
+    font-family: 'Bona Nova', serif;
+}
+
+/* ******************FOOTER************* */
+
+footer {
+    margin-top: auto;        
+    display: flex;           
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    
+}
+
+footer img {
+    height: 25px;
+    width: 25px;
+    margin: 0 10px;          
+}
+
