@@ -1,11 +1,10 @@
 <?php
 
 //Accès
-header("Access-Control-Allow-Origin: http://galerie.test");
+header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
 //Format des données envoyées
-
 header("Content-Type: application/json; charset=UTF-8 ");
 
 //Méthode autorisées
@@ -49,8 +48,5 @@ try {
 } catch (PDOException $e) {
     die("Erreur de connexion à la BDD : " . $e->getMessage());
 }
-
-
-
 
 ?>

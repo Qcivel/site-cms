@@ -10,6 +10,3 @@
     <p><?php echo  $message ?></p>
 </form>
 
-
-
- 

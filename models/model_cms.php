@@ -90,7 +90,6 @@ public function setBdd(?PDO $bdd):self {$this->bdd = $bdd; return $this;}
         $select_req->bindValue(':id_series', $id_series, PDO::PARAM_INT);
         $req->bindValue(':id_series', $id_series, PDO::PARAM_INT);
 
-
         $select_req->execute();
         $data_url = $select_req->fetchAll(PDO::FETCH_ASSOC);
 
@@ -101,7 +100,6 @@ public function setBdd(?PDO $bdd):self {$this->bdd = $bdd; return $this;}
                     unlink($data);
                 }
             }
-
         }
         return $req->execute();
     }

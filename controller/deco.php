@@ -6,6 +6,6 @@ session_start();
 session_destroy();
 
 //Redirection HTTP
-header('location:../index.php');
+header('location:/site-cms/index.php');
 
 ?>

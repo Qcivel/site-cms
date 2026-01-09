@@ -1,14 +1,7 @@
 <?php
-echo "Bonjour";
+
 //IMPORT DE RESSOURCE
 $style="../public/style/cms.css";
-
-include '../utils/functions.php';
-include '../models/model_cms.php';
-include '../models/model_picture.php';
-
-//Démarrer la séssion
-session_start();
 
 $message_status = "";
 $message_picture = "" ;
@@ -44,6 +37,7 @@ try {
 }
 
 $series = new Series($bdd);
+$picture = new Picture($bdd);
 
 //Ajout de serie
 if (isset($_POST['submit_series'])){
@@ -95,7 +89,7 @@ if(isset($_POST['submit_delete_series'])){
             //Message de succes en session
             $_SESSION['message_status'] = "<h3 style='color: green;'> SUCCES : La série a été supprimée avec toutes ses photos.</h3>";
             //Redirection 
-            header('Location: cms.php');
+            header('Location: index.php');
             exit;
         } else {
             $message_status = "<h3 style='color: red;'> ÉCHEC : La suppression de la serie a échoué.</h3>";
@@ -104,7 +98,6 @@ if(isset($_POST['submit_delete_series'])){
 }
 
 
-$picture = new Picture($bdd);
 
 //Ajoute des photos 
 try{
@@ -112,7 +105,6 @@ try{
 
         $file_key = 'file_picture';
 
-        
         $description_picture = sanitize($_POST['description_picture'] ?? '');
         $id_series = (int)($_POST['id_series'] ?? 0); 
 
@@ -125,7 +117,7 @@ try{
         } else {//Si tout est correct
             $count_files = count($_FILES['file_picture']['name']);
 
-            $uploadDir = '/site-galerie/uploads/';
+            $uploadDir = '../site-galerie/uploads/';
 
             if(!is_dir($uploadDir)){//Vérifie si le dossier uploads n'existe pas
                 mkdir($uploadDir, 0755, true);//Création du dossier
@@ -143,12 +135,14 @@ try{
                     $filename = uniqid() . '_' . basename($current_name); //créer un identifiant avec uniqid() et on va chercher le nom de la photo grace a basename
                     $uploadPath = $uploadDir . $filename; //Donne le chemin d'accès
 
+                    $accesPathPicture = "uploads/" . $filename; // Chemin relatif pour la BDD
+
                     if(move_uploaded_file($current_tmp_path, $uploadPath)){
                 
                         // Hydratation de l'objet (Action du Contrôleur) 
                         $picture->setTitlePicture($current_name);
                         $picture->setDescriptionPicture($description_picture);
-                        $picture->setUrlPicture($uploadPath);
+                        $picture->setUrlPicture($accesPathPicture);
                         $picture->setIdSeries($id_series);
                 
                         if ($picture->addPicture()) {
@@ -202,7 +196,7 @@ if (isset($_POST['delete_picture'])){
     
         if($picture_delete ->deletePicture($id_delete)){
             
-            header('Location: cms.php?filter_id_series=' . $id_serie_to_show);
+            header('Location: index.php?filter_id_series=' . $id_serie_to_show);
             exit; // Arrête l'exécution du script après la redirection
         } else {
             $message_delete = "<h3 style='color: red;'> ÉCHEC : La suppression de la photo a échoué.</h3>";
@@ -215,8 +209,7 @@ if (isset($_POST['delete_picture'])){
 
 
 //Appel des vues HTML 
-include '../views/view_header.php';
-include '../views/view_cms.php';
-include '../views/view_footer.php';
+include './views/view_cms.php';
+
 
 ?>

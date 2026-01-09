@@ -1,71 +1,68 @@
 <?php
-//Démarrer la session
 session_start();
 
-//IMPORT DE RESSOURCE
-$style='./public/style/style.css';
-include '../utils/functions.php';
-include '../models/model_cms.php';
+// 1. IMPORT DES RESSOURCES (Chemins corrigés : on utilise ./)
+include './utils/functions.php';
+include './models/model_cms.php';
+include './models/model_picture.php';
+ 
+$page = $_GET['page'] ?? 'cms';
+if($page === 'toDoList'){
+        $style = './public/style/toDoList.css';
+    }else {
+        $style = './public/style/style.css'; 
+    }
+$message = ''; 
 
-//Initialiser la variable d'affichage
-$message ='';
-
-//Formulaire de connexion
-
+// 2. TRAITEMENT DU LOGIN
 if(isset($_POST['submit_login'])){
     if(!empty($_POST['login']) && !empty($_POST['password'])){
-        //Nettoyer les données
         $loginSignUp = sanitize($_POST['login']);
         $passwordSignUp = sanitize($_POST['password']);
         
-        //Création d'une variable d'affichage pour tester
-        $data =[];
-        
-        try{
-            //Connection à la BDD
+        try {
             $bdd = new PDO('mysql:host=localhost;dbname=theoRenaut','root','root',array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-
-            $req = $bdd->prepare('SELECT u.id_user, u.login_user, u.password_user FROM user u JOIN rights r ON u.id_rights = r.id_rights WHERE u.login_user = ? LIMIT 1 ');
-
-            $req->bindParam(1,$loginSignUp,PDO::PARAM_STR);
-
-            //Execute la requête
-            $req->execute();
-
-            //Récupérer la réponse de la BDD
+            
+            // Requête SQL (Note : j'ai ajouté r.name_rights car tu l'utilises après)
+            $req = $bdd->prepare('SELECT u.id_user, u.login_user, u.password_user, r.name_rights FROM user u JOIN rights r ON u.id_rights = r.id_rights WHERE u.login_user = ? LIMIT 1');
+            $req->execute([$loginSignUp]);
             $data = $req->fetch();
 
-            //Vérification du MDP
             if ($data && password_verify($passwordSignUp, $data['password_user'])) {
-
-                //Crétion de la session
+                // On remplit la session
                 $_SESSION['user_id'] = $data['id_user'];
                 $_SESSION['login'] = $data['login_user'];
                 $_SESSION['rights_name'] = $data['name_rights'];
 
-                //Redirection vers la page CMS
-                header('location: cms.php');
-                exit; //Arrête l'execution du script apres la redirection
+                // On recharge l'index pour que le "Routeur" ci-dessous s'active
+                header('Location: index.php');
+                exit;
             } else {
                 $message = "Identifiant ou mot de passe incorrect";
             }
-
-           
-        }catch(EXCEPTION $error){
+        } catch(EXCEPTION $error){
             die($error->getMessage());
         }
-    } else{
-        $message="Veuillez remplir tous les champs";
+    } else {
+        $message = "Veuillez remplir tous les champs";
     }
 }
-print_r($_SESSION);
 
+// 3. AFFICHAGE (Le Routeur)
+include './views/view_header.php';
 
+// Si l'utilisateur est connecté (sa session existe)
+if(isset($_SESSION['user_id'])) {
+    
 
+    if($page === 'toDoList'){
+        include './controller/toDoList.php';
+    }else {
+        include './controller/cms.php'; 
+    }
+} else {
+    include './views/view_login.php';
+}
 
-include '../views/view_header.php' ;
-include '../views/view_login.php' ;
-include '../views/view_footer.php' ;
-
-
+include './views/view_footer.php';
 ?>

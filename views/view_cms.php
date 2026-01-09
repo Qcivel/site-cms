@@ -1,5 +1,5 @@
 
-<button><a href="../controller/deco.php">Se déconnecter</a></button>
+<button><a href="/site-cms/controller/deco.php">Se déconnecter</a></button>
 
 <?php if (isset($_SESSION['login'])){
     echo "<h2>Utilisateur connécté : {$_SESSION['login']}</h2>";
@@ -21,26 +21,31 @@
 <hr>
 
 <h2>Supprimer une série</h2>
-<form action="" method="post">
-    <label for="id_series">Sélectionner la Série :</label>
-    <select name="id_series" class="class_series"  required>
-        <?php $index = 1;?>
-        <?php foreach ($userSeriesList as $seriesItem): ?>
-            <option value="<?php echo $seriesItem['id_series']; ?>">
-                Série n°<?php echo $index ++; ?> : <?php echo htmlspecialchars($seriesItem['title_series']); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-        <input type="submit" name="submit_delete_series" value="Supprimer la serie">
-</form>
+<?php if (empty($userSeriesList)): ?>
+    <p class="error">Vous n'avez pas encore créé de série. Veuillez commencer par en créer une ci-dessus.</p>
+<?php else: ?>
+    <form action="" method="post">
+        <label for="id_series">Sélectionner la Série :</label>
+        <select name="id_series" class="class_series"  required>
+            <?php $index = 1;?>
+            <?php foreach ($userSeriesList as $seriesItem): ?>
+                <option value="<?php echo $seriesItem['id_series']; ?>">
+                    Série n°<?php echo $index ++; ?> : <?php echo htmlspecialchars($seriesItem['title_series']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+            <input type="submit" name="submit_delete_series" value="Supprimer la serie">
+    </form>
+<?php endif; ?>
+<br>
 
-<h2>Filtrer les photos</h2>
+<h2>Ajouter des photos</h2>
 
 <?php if (empty($userSeriesList)): ?>
     <p class="error">Vous n'avez pas encore créé de série. Veuillez commencer par en créer une ci-dessus.</p>
 <?php else: ?>
     
-    <form action="cms.php" method="post" enctype="multipart/form-data">
+    <form action="index.php" method="post" enctype="multipart/form-data">
         <label for="id_series">Sélectionner la Série :</label>
         
         <select name="id_series" class="class_series" required>
@@ -58,11 +63,11 @@
         <label for="file_picture">Fichier photo :</label>
         <input type="file"  name="file_picture[]" id="file_picture" multiple required>
         
-        <input type="submit" name="submit_picture" value="Ajouter la photo">
+        <input type="submit" name="submit_picture" value="Ajouter la/les photo">
         <p><?php echo  $message_picture ?></p>
     </form>
 <?php endif; ?>
-
+<br>
 <h2>Affichage des photos</h2>
     <form action="" method="post">
         <select name="filter_id_series" id="filter_id_series" onchange="this.form.submit()">
@@ -81,13 +86,13 @@
         <?php foreach ($picture_view as $picture_show): ?>
             <div class="photo_card_cms">
                 <h3><?php echo htmlspecialchars($picture_show['title_picture']); ?></h3>
-                <img src="<?php echo $picture_show['url_picture']; ?>" alt="<?php echo $picture_show['title_picture']; ?>" width="400">
+                <img src="<?php echo "../site-galerie/" . $picture_show['url_picture']; ?>" alt="<?php echo $picture_show['title_picture']; ?>" width="400">
                 
                 <?php if(!empty($picture_show['description_picture'])):?>
                     <p><?php echo htmlspecialchars($picture_show['description_picture']); ?></p>
                 <?php endif; ?>
 
-                <form action="cms.php" method="post">
+                <form action="index.php" method="post">
                     <input type="hidden" name="id_picture_delete" value="<?php echo $picture_show['id_picture']; ?>">
                     <button type="submit" name="delete_picture" ;>Supprimer la photo</button>
                 </form>

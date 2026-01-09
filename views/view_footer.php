@@ -4,10 +4,7 @@
     <a href="/theoRenaut/controller/contact.php"><img src="/theoRenaut/public/image/courrier.png" alt="courrier"></a>
 </footer>
 
-
-     <script src="/theoRenaut/public/js/<?php echo $script ?>"></script>
-     
-    
+<script src="./script/<?php echo $script ?>"></script>
 
 </body>
 </html>

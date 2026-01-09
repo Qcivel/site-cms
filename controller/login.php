@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
 
 //IMPORT DE RESSOURCE
@@ -71,4 +71,4 @@ include '../views/view_login.php' ;
 include '../views/view_footer.php' ;
 
 
-?>
+?> -->
